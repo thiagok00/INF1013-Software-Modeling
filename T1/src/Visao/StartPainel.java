@@ -10,6 +10,7 @@ import Controlador.ControladorMaquina;
 
 public class StartPainel extends JPanel implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
 	private JButton startButton;
 	private ControladorMaquina maquina;
 	StartPainel(ControladorMaquina m) {

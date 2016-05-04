@@ -43,8 +43,9 @@ public class MaquinaPainel extends JPanel implements Observer{
 			}
 		g.drawImage(maquinaImg, 0, 0, 474, 474,null);
 		
+		int yRect = 474 - rectHeight;
 		g.setColor(Color.BLUE);
-		g.fillRect(474, 0, 40, rectHeight);
+		g.fillRect(474, yRect, 40, rectHeight);
 		g.setColor(Color.BLACK);
 		g.drawRect(474, 0, 40, 474);
 	}
