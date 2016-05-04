@@ -6,22 +6,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import Controlador.Bomba;
+import Controlador.Motor;
+import Controlador.Valvula;
 
-public class MaquinaPainel extends JPanel implements ActionListener {
+
+public class MaquinaPainel extends JPanel implements ActionListener, Observer{
 
 	private static final long serialVersionUID = 1L;
-	private JButton start;
 	
 	public MaquinaPainel() {
-		this.setBounds(200,0,700,700);	
-		start = new JButton("START");
-		start.addActionListener(this);
-		add(start);
+		this.setBounds(100,0,700,700);	
+
 	}
 	
 	
@@ -42,7 +45,19 @@ public class MaquinaPainel extends JPanel implements ActionListener {
 		
 	}
 
-
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o instanceof Bomba) {
+			
+		}
+		else if (o instanceof Motor) {
+			
+		}
+		else if (o instanceof Valvula) {
+			Integer i = (Integer) arg;
+		}
+		
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
