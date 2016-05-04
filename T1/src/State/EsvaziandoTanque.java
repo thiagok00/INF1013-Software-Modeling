@@ -7,4 +7,12 @@ public class EsvaziandoTanque extends MaquinaState {
 		return "Esvaziando Tanque";
 	}
 
+	EsvaziandoTanque() {
+		maquina.bomba.start();
+	}
+	
+	@Override
+	public MaquinaState timeOver() {
+		return new Centrifugando();
+	}
 }

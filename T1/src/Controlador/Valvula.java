@@ -16,7 +16,6 @@ public class Valvula extends Observable implements ActionListener {
 	Valvula(ControladorMaquina m) {
 		this.maquina = m;
 		t = new Timer(1000,this);
-		t.addActionListener(this);
 	}
 	
 	
@@ -51,7 +50,7 @@ public class Valvula extends Observable implements ActionListener {
 		
 		if (nivel == 10) {
 			t.stop();
-			maquina.full();
+			this.close();
 		}
 			
 		

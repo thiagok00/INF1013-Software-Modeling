@@ -9,10 +9,7 @@ public class Aguardando extends MaquinaState {
 	
 	@Override
 	public MaquinaState start(){
-		
-		MaquinaState.maquina.valvula.open();
-		
-		return new EnchendoTanque();
+	 return new EnchendoTanque();
 	}
 
 }
