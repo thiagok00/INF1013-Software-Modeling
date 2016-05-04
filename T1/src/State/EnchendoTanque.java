@@ -1,6 +1,6 @@
 package State;
 
-public class EnchendoTanque extends MaquinaState {
+class EnchendoTanque extends MaquinaState {
 
 	@Override
 	public String getStatus() {

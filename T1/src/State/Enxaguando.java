@@ -1,6 +1,6 @@
 package State;
 
-public class Enxaguando extends MaquinaState {
+class Enxaguando extends MaquinaState {
 
 
 	@Override

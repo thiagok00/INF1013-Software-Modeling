@@ -1,6 +1,6 @@
 package State;
 
-public class Aguardando extends MaquinaState {
+class Aguardando extends MaquinaState {
 
 	@Override
 	public String getStatus() {
@@ -9,7 +9,8 @@ public class Aguardando extends MaquinaState {
 	
 	@Override
 	public MaquinaState start(){
-	 return new EnchendoTanque();
+		maquina.ciclo = 1;
+		return new EnchendoTanque();
 	}
 
 }
