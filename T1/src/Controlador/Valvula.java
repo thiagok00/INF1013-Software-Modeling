@@ -37,9 +37,6 @@ public class Valvula extends Observable implements ActionListener {
 		}
 	}
 	
-	boolean get() {
-		return opened;
-	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

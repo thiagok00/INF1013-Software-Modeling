@@ -8,8 +8,9 @@ import javax.swing.Timer;
 
 public class Motor extends Observable implements ActionListener {
 
-	Timer t;
-	double max;
+	private Timer t;
+	private int max;
+	private int cont;
 	private ControladorMaquina maquina;
 	
 	Motor(ControladorMaquina m) {
@@ -19,14 +20,16 @@ public class Motor extends Observable implements ActionListener {
 	
 	public void slow() {
 		t = new Timer(100,this);
-		max = 0.0;
+		cont = 0;
+		max = 100;
 		t.start();
 		System.out.println("Motor ligado modo slow.");
 	}
 
 	public void fast() {
 		t = new Timer(50,this);
-		max = 0.0;
+		cont = 0;
+		max = 200;
 		t.start();
 		System.out.println("Motor ligado modo fast.");
 	}
@@ -40,9 +43,10 @@ public class Motor extends Observable implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		max += 0.1;
+
+		cont++;
 		this.setChanged();
-		if(max < 5.0)
+		if(cont < max)
 			this.notifyObservers(new Boolean(true));
 		else {
 			this.notifyObservers(new Boolean(false));

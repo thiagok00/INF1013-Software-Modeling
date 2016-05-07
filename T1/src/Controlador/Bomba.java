@@ -7,9 +7,9 @@ import javax.swing.Timer;
 
 public class Bomba extends Observable implements ActionListener {
 
-	Timer t;
-	Integer nivel;
-	ControladorMaquina maquina;
+	private Timer t;
+	private Integer nivel;
+	private ControladorMaquina maquina;
 	
 	Bomba(ControladorMaquina m) {
 		this.maquina = m;
