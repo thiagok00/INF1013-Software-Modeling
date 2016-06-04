@@ -16,6 +16,7 @@ public class Cliente {
 			saida.println(msg);
 			msg = teclado.nextLine();
 		}
+		
 		saida.close();
 		teclado.close();
 		cli.close();
