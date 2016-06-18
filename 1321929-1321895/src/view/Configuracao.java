@@ -13,9 +13,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import ClientServer.Cliente;
+import ClientServer.ServerFrame;
 import controller.ControllerTabuleiro;
 
 @SuppressWarnings("serial")
@@ -101,6 +104,68 @@ public class Configuracao extends JFrame {
 		btnInicializar.setBorderPainted(false);
 		add(btnInicializar);
 		
+		
+		JButton btnServ = new JButton();
+		btnServ.setText("Iniciar Servidor");
+		btnServ.setFont(new Font("Stencil", Font.PLAIN, 22));
+		btnServ.setBounds(95, 270, 200, 60);
+		btnServ.setBackground(new Color(48,32,19));
+		btnServ.setForeground(Color.white);
+		btnServ.setFocusPainted(false);
+		btnServ.setBorderPainted(false);
+		add(btnServ);
+		btnServ.addMouseListener(new ServerFrame(this));
+		
+		
+		JButton btnCli = new JButton();
+		btnCli.setText("Conectar Jogo");
+		btnCli.setFont(new Font("Stencil", Font.PLAIN, 22));
+		btnCli.setBounds(95, 340, 200, 60);
+		btnCli.setBackground(new Color(48,32,19));
+		btnCli.setForeground(Color.white);
+		btnCli.setFocusPainted(false);
+		btnCli.setBorderPainted(false);
+		add(btnCli);
+		btnCli.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//abrir panel ip e porta
+				String input = JOptionPane.showInputDialog(null, "IP:PORTA", "IP:PORTA", JOptionPane.PLAIN_MESSAGE);
+				if (input != null) {
+					String[] strings = input.split(":");
+					
+					Cliente cli = new Cliente(strings[0],Integer.parseInt(strings[1]));
+				}
+							
+			}	
+		});
+		
+		
+		
 		btnInicializar.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -138,6 +203,18 @@ public class Configuracao extends JFrame {
 		});
 	}
 
+	public void inicializaJogoRede(int qtdJogadores) {
+		
+		for (int i = 0; i < qtdJogadores; i++) {
+			Exercito e = lstExercitos.get(i);
+			e.setSelecionado();
+		}
+		if(validaJogadores()){
+			setVisible(false);
+		};
+		
+	}
+	
 	private void carregaBgJanela() {
 		// TODO Auto-generated method stub
 		String Imagem = "src/resources/Images/bgConfiguracao.png";
@@ -191,7 +268,6 @@ public class Configuracao extends JFrame {
 		pnlExercitos.setOpaque(false);
 		pnlExercitos.setSize(360,90);
 		pnlExercitos.setLocation(20, 113);
-		
 		for (view.Exercito ex : getLstexercitos()) {
 
 			ex.setLocation(0,0);
@@ -227,6 +303,7 @@ public class Configuracao extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					ex.setSelecionado();
+					System.out.println(ex.getNome());
 					repaint();
 					
 				}
