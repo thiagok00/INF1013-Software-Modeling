@@ -102,7 +102,7 @@ public class Configuracao extends JFrame {
 		btnInicializar.setForeground(Color.white);
 		btnInicializar.setFocusPainted(false);
 		btnInicializar.setBorderPainted(false);
-		add(btnInicializar);
+		//add(btnInicializar);
 		
 		
 		JButton btnServ = new JButton();
