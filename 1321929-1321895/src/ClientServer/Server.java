@@ -52,13 +52,32 @@ public class Server implements Runnable {
 		
 		}	
 		//BROADCAST INICIO JOGO
-		Server.getInstance().broadCast(""+numeroJogadores);
+		Server.getInstance().startGame(numeroJogadores);
 		
 		
 	} 
 	
 	
-	/////
+	public void startGame(int numeroJogadores) {
+		int i = 0;
+		String[] jogadoresNomes = {"Laranja", "Vermelho", "Azul", "Verde", "Amarelo", "Preto"};
+		for (ClientThread cThread : Server.clientList ) {
+			Socket cSocket = cThread.getClientSocket();
+			try {
+				PrintStream output = new PrintStream(cSocket.getOutputStream());
+				
+				String s = numeroJogadores+"_"+jogadoresNomes[i];
+						
+						
+				output.println(s);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		i++;
+		}
+		
+	}
 	
 	public void broadCast(String s) {
 

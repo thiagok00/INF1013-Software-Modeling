@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+import controller.ControllerTabuleiro;
 import view.Configuracao;
 
 public class Cliente implements Runnable{
@@ -20,8 +21,10 @@ public class Cliente implements Runnable{
 			System.out.println("Server not reached");
 			e.printStackTrace();
 		}
-		int qtdJogadores = waitStart();
-		Configuracao.getInstance().inicializaJogoRede(qtdJogadores);
+		
+		String[] msgs = waitStart().split("_");
+		Configuracao.cli = this; 
+		Configuracao.getInstance().inicializaJogoRede(Integer.parseInt(msgs[0]),msgs[1]);
 		new Thread(this).start();
 	}
 	
@@ -39,7 +42,7 @@ public class Cliente implements Runnable{
 		}
 	}
 	
-	private int waitStart() {
+	private String waitStart() {
 		
 		Scanner in_serv = null;
 		try {
@@ -50,7 +53,7 @@ public class Cliente implements Runnable{
 		System.out.println("Cliente esperando começar");
 		String msgDoServidor = in_serv.nextLine();
 		System.out.println(msgDoServidor);
-		return Integer.parseInt(msgDoServidor);
+		return msgDoServidor;
 				
 	}
 
@@ -66,7 +69,9 @@ public class Cliente implements Runnable{
 		while (in_serv.hasNextLine()) {
 			String msgDoServidor = in_serv.nextLine();
 			System.out.println(msgDoServidor);
-			//TODO: fazer alguma coisa c msgDoServidor
+		ControllerTabuleiro.getInstance().desmembraMsg(msgDoServidor);
+			
+			
 		}		
 
 		System.out.println("Cliente nao escutando");

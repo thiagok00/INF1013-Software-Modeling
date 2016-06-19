@@ -31,6 +31,7 @@ public class ControllerTabuleiro extends Observable {
 	private DeckObjetivos deckObjetivos;
 	private Exercito vencedor;
 
+	public String meuNome = "";
 	// Bloco de inicialização das jogadas
 	{
 		lstJogadas = new ArrayList<Jogada>();
@@ -739,7 +740,7 @@ public class ControllerTabuleiro extends Observable {
 			}
 			e.getLstCartas().clear();
 		}
-		
+
 		//notificaMudancas();
 
 		return false;
@@ -953,9 +954,9 @@ public class ControllerTabuleiro extends Observable {
 				retorno[0] = jogadorDaVez.getLstCartas().get(i).getImagem();
 				retorno[1] = jogadorDaVez.getLstCartas().get(i).getTerritorio() != null
 						? jogadorDaVez.getLstCartas().get(i).getTerritorio().getNome() : null;
-				retorno[2] = jogadorDaVez.getLstCartas().get(i).getSimbolo();
+						retorno[2] = jogadorDaVez.getLstCartas().get(i).getSimbolo();
 
-				return retorno;
+						return retorno;
 			}
 		}
 		return null;
@@ -1112,16 +1113,259 @@ public class ControllerTabuleiro extends Observable {
 
 	public void btnProxJogada_click() {
 		if (vencedor == null) {
-			setTerritorioDestino(null);
-			setTerritorioOrigem(null);
-			proxJogada();
+			System.out.println("Meu nome: "+meuNome+"\njogador da vez: "+jogadorDaVez.getNome());
+			if(meuNome.equals(jogadorDaVez.getNome()) ) {
+				setTerritorioDestino(null);
+				setTerritorioOrigem(null);
+				proxJogada();
+			}
 		}
 	}
 
+	public String montaMsg() {
+		ArrayList<Continente> lstContinentes = this.getLstContinentes();
+		int indexCont = 0;
+		int indexPais = 0;
+		String message = "";
+
+		for(indexCont=0; indexCont < 6; indexCont++) {
+
+
+			for(indexPais = 0; indexPais < lstContinentes.get(indexCont).getLstTerritorios().size(); indexPais ++) {
+
+				message += lstContinentes.get(indexCont).getNome();
+
+				message += "&";
+
+				//pega o nome do pais x do continente y
+				message += lstContinentes.get(indexCont).getLstTerritorios().get(indexPais).getNome();
+
+				message += "&";
+
+				//pega a quantidade de soldados que estao no pais x
+				message += lstContinentes.get(indexCont).getLstTerritorios().get(indexPais).getLstSoldados().size();
+
+				message += "&";
+
+
+				//pega a cor dos soldados do pais x, que por acaso é o nome do Exercito
+				message += lstContinentes.get(indexCont).getLstTerritorios().get(indexPais).getLstSoldados().get(0).getExercito().getNome();
+
+				message += "_";
+
+
+
+			}
+		}
+
+		//REVISAR ISSO AQUI!!!
+		message += jogadorDaVez.getNome();
+
+		System.out.println(message);
+
+		return message;
+	}
+
+	public void desmembraMsg(String msg) {
+
+		int index;
+		String[] parts = msg.split("_");
+		String[] parts2;
+		System.out.println(parts.length + "deve ser igual a " + 52);
+		Exercito doArq = null;
+
+		for(index = 0; index < parts.length ; index++) {
+
+			//lista com todos os territórios
+			if(index < parts.length - 2) {
+
+				parts2 = parts[index].split("&");
+
+				if(index < 9 ) {
+
+					//AMERICA DO NORTE, atualiza a label dos soldados de cada pais do continente
+					System.out.println(lstContinentes.get(0).getLstTerritorios().get(index).getLstSoldados().size());
+
+					//pega o exercito que ta naquele pais naquele momento
+					for(int j=0 ; j < lstJogadores.size() ; j++) {
+						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							doArq=lstJogadores.get(j);
+						}
+					}
+					//Exercito ex = lstContinentes.get(0).getLstTerritorios().get(index).getLstSoldados().get(0).getExercito();
+
+					//da um clear pra preencher os soldados de novo
+					lstContinentes.get(0).getLstTerritorios().get(index).getLstSoldados().clear();
+
+					//adiciona os soldados
+					for(int i= 0 ; i < Integer.parseInt(parts2[2].toString()) ; i++) {
+						Soldado e = new Soldado(doArq);
+						lstContinentes.get(0).getLstTerritorios().get(index).getLstSoldados().add(e);
+					}
+
+					lstContinentes.get(0).getLstTerritorios().get(index).atualizaLblnumsoldados();
+
+				}
+				else if (index < 13) {
+
+					for(int j=0 ; j < lstJogadores.size() ; j++) {
+						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							doArq=lstJogadores.get(j);
+						}
+					}
+
+					//America do sul, atualiza a label dos soldados de cada pais do continente
+					System.out.println(lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().size());
+
+					//    Exercito ex = lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().get(0).getExercito();
+
+					lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().clear();
+
+					for(int i= 0 ; i < Integer.parseInt(parts2[2].toString()) ; i++) {
+						Soldado e = new Soldado(doArq);
+						lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().add(e);
+					}
+
+					lstContinentes.get(1).getLstTerritorios().get(index-9).atualizaLblnumsoldados();
+
+					//lstContinentes.get(1).getLstTerritorios().get(index-9).getNome();
+
+				}
+				else if(index < 19) {
+
+
+					for(int j=0 ; j < lstJogadores.size() ; j++) {
+						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							doArq=lstJogadores.get(j);
+						}
+					}
+
+					//Africa, atualiza a label dos soldados de cada pais do continente
+					System.out.println(lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().size());
+
+					//Exercito ex = lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().get(0).getExercito();
+
+					lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().clear();
+
+					for(int i= 0 ; i < Integer.parseInt(parts2[2].toString()) ; i++) {
+						Soldado e = new Soldado(doArq);
+						lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().add(e);
+					}
+
+
+					lstContinentes.get(2).getLstTerritorios().get(index-13).atualizaLblnumsoldados();
+					//lstContinentes.get(2).getLstTerritorios().get(index-13).getNome();
+
+
+				}
+				else if(index < 39) {
+
+					for(int j=0 ; j < lstJogadores.size() ; j++) {
+						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							doArq=lstJogadores.get(j);
+						}
+					}
+
+					//Asia, atualiza a label dos soldados de cada pais do continente
+					System.out.println(lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().size());
+
+					//   Exercito ex = lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().get(0).getExercito();
+
+					lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().clear();
+
+					for(int i= 0 ; i < Integer.parseInt(parts2[2].toString()) ; i++) {
+						Soldado e = new Soldado(doArq);
+						lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().add(e);
+					}
+
+					lstContinentes.get(3).getLstTerritorios().get(index-19).atualizaLblnumsoldados();
+					//lstContinentes.get(3).getLstTerritorios().get(index-19).getNome();
+
+				}
+				else if(index < 47) {
+
+
+					for(int j=0 ; j < lstJogadores.size() ; j++) {
+						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							doArq=lstJogadores.get(j);
+						}
+					}
+
+					//Europa, atualiza a label dos soldados de cada pais do continente
+					System.out.println(lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().size());
+
+					//Exercito ex = lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().get(0).getExercito();
+
+					lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().clear();
+
+					for(int i= 0 ; i < Integer.parseInt(parts2[2].toString()) ; i++) {
+						Soldado e = new Soldado(doArq);
+						lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().add(e);
+					}
+
+					lstContinentes.get(4).getLstTerritorios().get(index-39).atualizaLblnumsoldados();
+					//lstContinentes.get(4).getLstTerritorios().get(index-40).getNome();
+
+				}
+				else {
+
+
+					for(int j=0 ; j < lstJogadores.size() ; j++) {
+						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							doArq=lstJogadores.get(j);
+						}
+					}
+
+					//Oceania, atualiza a label dos soldados de cada pais do continente
+					System.out.println(lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().size());
+
+					//  Exercito ex = lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().get(0).getExercito();
+
+					lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().clear();
+
+					for(int i= 0 ; i < Integer.parseInt(parts2[2].toString()) ; i++) {
+						Soldado e = new Soldado(doArq);
+						lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().add(e);
+					}
+
+					lstContinentes.get(5).getLstTerritorios().get(index-47).atualizaLblnumsoldados();
+					//lstContinentes.get(5).getLstTerritorios().get(index-48).getNome();
+
+				}
+			}
+
+			//jogador da vez
+			else {
+
+				//setarJogadorDaVez
+				//setJogadorDaVez();
+				for (Exercito e : lstJogadores) {
+					if (e.isAtivo()) {
+						e.setAtivo();
+					}
+				}
+
+				for(Exercito e: lstJogadores) {
+
+					if(e.getNome().equals(parts[51].toString())) {
+						e.setAtivo();
+						jogadorDaVez = e;
+						System.out.println("jogador da vez que ta setando: " + e.getNome());
+					}
+				}
+				System.out.println("jogador da vez que deveria ser: " + parts[51].toString());
+
+			}
+
+		}
+		System.out.println("Jog vez-->"+jogadorDaVez.getNome());
+		setChanged();
+		notifyObservers();
+	}
 	private void notificaMudancas() {
 		// Se o objetivo do jogador da vez dor diferente de nulo e o jogo ainda não possuir vencedor
 		if (jogadorDaVez.getObjetivo() != null && vencedor == null) {
-			
+
 			// Se o check do objetivo do jogador for igual a true
 			if (jogadorDaVez.getObjetivo().getExercitoAlvo() == null && jogadorDaVez.getObjetivo().Check(lstContinentes, jogadorDaVez)) {
 				setVencedor();
@@ -1132,7 +1376,7 @@ public class ControllerTabuleiro extends Observable {
 			}
 		}
 
-		setChanged();
+		this.setChanged();
 		notifyObservers();
 	}
 
@@ -1250,7 +1494,7 @@ public class ControllerTabuleiro extends Observable {
 				if (descobreJogadas().getNome() == "Distribuir" && jogadorDaVez.getLstCartas().size() < 5) {
 
 					if (e == jogadorDaVez) { // Se o territorio clicado for do
-												// jogador da vez
+						// jogador da vez
 
 						if (moveSoldadoContinente(c, t)) {
 

@@ -26,7 +26,7 @@ public class Configuracao extends JFrame {
 	private static Configuracao configuracao;
 	private ArrayList<view.Exercito> lstExercitos = new ArrayList<view.Exercito>();
 	private ArrayList<view.Exercito> lstJogadores = new ArrayList<Exercito>();
-	
+	static public Cliente cli;
 	// Bloco de inicialização dos exercitos
 		{
 			lstExercitos.add(new view.Exercito("Laranja", 	new Color(209, 84, 000)));
@@ -158,7 +158,7 @@ public class Configuracao extends JFrame {
 				if (input != null) {
 					String[] strings = input.split(":");
 					
-					Cliente cli = new Cliente(strings[0],Integer.parseInt(strings[1]));
+					Configuracao.cli = new Cliente(strings[0],Integer.parseInt(strings[1]));
 				}
 							
 			}	
@@ -203,13 +203,23 @@ public class Configuracao extends JFrame {
 		});
 	}
 
-	public void inicializaJogoRede(int qtdJogadores) {
+	public void inicializaJogoRede(int qtdJogadores,String meuNome) {
 		
 		for (int i = 0; i < qtdJogadores; i++) {
 			Exercito e = lstExercitos.get(i);
 			e.setSelecionado();
 		}
 		if(validaJogadores()){
+			ControllerTabuleiro c = ControllerTabuleiro.getInstance();
+			c.meuNome = meuNome;
+			
+			if (meuNome.equals("Laranja")) {
+				String msg = c.montaMsg();
+				cli.sendMsgToServer(msg);
+			}
+			
+			//c.getJogadorDaVez();
+			
 			setVisible(false);
 		};
 		

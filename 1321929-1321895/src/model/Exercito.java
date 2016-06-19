@@ -5,7 +5,7 @@ import controller.ControllerTabuleiro;
 
 public class Exercito {
 
-	private String nome;
+	public String nome;
 	private Object cor;
 	private boolean ativo = false;
 	private ArrayList<Soldado> lstSoldados = new ArrayList<Soldado>();
