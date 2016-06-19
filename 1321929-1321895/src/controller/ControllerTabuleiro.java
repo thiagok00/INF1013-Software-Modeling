@@ -1186,7 +1186,7 @@ public class ControllerTabuleiro extends Observable {
 				if(index < 9 ) {
 
 					//AMERICA DO NORTE, atualiza a label dos soldados de cada pais do continente
-					System.out.println(lstContinentes.get(0).getLstTerritorios().get(index).getLstSoldados().size());
+					//System.out.println(lstContinentes.get(0).getLstTerritorios().get(index).getLstSoldados().size());
 
 					//pega o exercito que ta naquele pais naquele momento
 					for(int j=0 ; j < lstJogadores.size() ; j++) {
@@ -1217,7 +1217,7 @@ public class ControllerTabuleiro extends Observable {
 					}
 
 					//America do sul, atualiza a label dos soldados de cada pais do continente
-					System.out.println(lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().size());
+					//System.out.println(lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().size());
 
 					//    Exercito ex = lstContinentes.get(1).getLstTerritorios().get(index-9).getLstSoldados().get(0).getExercito();
 
@@ -1243,7 +1243,7 @@ public class ControllerTabuleiro extends Observable {
 					}
 
 					//Africa, atualiza a label dos soldados de cada pais do continente
-					System.out.println(lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().size());
+					//System.out.println(lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().size());
 
 					//Exercito ex = lstContinentes.get(2).getLstTerritorios().get(index-13).getLstSoldados().get(0).getExercito();
 
@@ -1269,7 +1269,7 @@ public class ControllerTabuleiro extends Observable {
 					}
 
 					//Asia, atualiza a label dos soldados de cada pais do continente
-					System.out.println(lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().size());
+					//System.out.println(lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().size());
 
 					//   Exercito ex = lstContinentes.get(3).getLstTerritorios().get(index-19).getLstSoldados().get(0).getExercito();
 
@@ -1294,7 +1294,7 @@ public class ControllerTabuleiro extends Observable {
 					}
 
 					//Europa, atualiza a label dos soldados de cada pais do continente
-					System.out.println(lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().size());
+					//System.out.println(lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().size());
 
 					//Exercito ex = lstContinentes.get(4).getLstTerritorios().get(index-39).getLstSoldados().get(0).getExercito();
 
@@ -1314,12 +1314,13 @@ public class ControllerTabuleiro extends Observable {
 
 					for(int j=0 ; j < lstJogadores.size() ; j++) {
 						if(lstJogadores.get(j).nome.equals(parts2[3])){
+							System.out.println(parts[3]);
 							doArq=lstJogadores.get(j);
 						}
 					}
 
 					//Oceania, atualiza a label dos soldados de cada pais do continente
-					System.out.println(lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().size());
+					//System.out.println(lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().size());
 
 					//  Exercito ex = lstContinentes.get(5).getLstTerritorios().get(index-47).getLstSoldados().get(0).getExercito();
 
@@ -1352,17 +1353,81 @@ public class ControllerTabuleiro extends Observable {
 					if(e.getNome().equals(parts[51].toString())) {
 						e.setAtivo();
 						jogadorDaVez = e;
-						System.out.println("jogador da vez que ta setando: " + e.getNome());
+						System.out.println("jogador da vez que ta setando: " + jogadorDaVez.getNome());
 					}
 				}
 				System.out.println("jogador da vez que deveria ser: " + parts[51].toString());
 
 			}
 
+
 		}
 		System.out.println("Jog vez-->"+jogadorDaVez.getNome());
+		
 		setChanged();
 		notifyObservers();
+	}
+
+	public String montaMsgDeck() {
+
+		String message = "";
+		System.out.println(deck.getLstCartas().size());
+
+		for (Carta auxCart : deck.getLstCartas()) {
+
+
+			if(auxCart.isCoringa()) {
+				message += "null";
+			}
+			else {
+				message += auxCart.getTerritorio().getNome();
+			}
+
+			message += "&";
+			message += auxCart.getSimbolo();
+			message += "&";
+			message += auxCart.isCoringa();
+			message += "&";
+			message += auxCart.getImagem();
+			message += "-";
+
+		}
+
+
+
+		System.out.println(message);
+		return message;
+	}
+	public void desmembraMsgDeck(String msg) {
+
+		String[] territorios = msg.split("-");
+		Territorio territorioAux;
+		System.out.println(territorios.length);
+		Carta carta = null;
+		Deck deckAux;
+
+
+		this.deck.getLstCartas().clear();
+
+
+		for(String territorio : territorios) {
+
+			String[] parts = territorio.split("&");
+
+			if(parts[0].equals("null")) {
+				carta = new Carta(null,4,true,"war_carta_coringa");
+			}
+
+			else
+				for(Continente c : lstContinentes) {
+					for(Territorio t : c.getLstTerritorios()) {
+						if(t.getNome().equals(parts[0]))
+							carta = new Carta(t,Integer.parseInt(parts[1]),Boolean.parseBoolean(parts[2]),parts[3]);
+					}
+				}
+			this.deck.getLstCartas().add(carta);
+			System.out.println(this.deck.getLstCartas().size());
+		}
 	}
 	private void notificaMudancas() {
 		// Se o objetivo do jogador da vez dor diferente de nulo e o jogo ainda não possuir vencedor
@@ -1386,7 +1451,46 @@ public class ControllerTabuleiro extends Observable {
 		this.vencedor = jogadorDaVez;
 
 	}
+	public String montaMsgJogadores() {
 
+		String message= "";
+
+		for(int i = 0 ; i < lstJogadores.size() ; i++) {
+			message+=lstJogadores.get(i).nome;
+			message+="&";
+		}
+
+		return message;
+	}
+	
+	public void addJogadoresRede(String minhaCor,String msg){
+		  
+		  this.meuNome = minhaCor;
+		  String[] strJogaores;
+		 
+		  strJogaores = msg.split("&");
+		  for(int ii = 0; ii<strJogaores.length; ii++){
+		   System.out.println(strJogaores[ii]);
+		  }
+		  
+		  lstJogadores.clear();
+		  for(int i = 0 ; i<strJogaores.length; i++){
+		   if (strJogaores[i].equals("Laranja"))
+		    lstJogadores.add(new model.Exercito("Laranja", new Color(209, 84, 000)));
+		   else if (strJogaores[i].equals("Vermelho"))
+		    lstJogadores.add(new model.Exercito("Vermelho", new Color(255, 003, 003)));
+		   else if (strJogaores[i].equals("Azul"))
+		    lstJogadores.add(new model.Exercito("Azul", new Color(030, 067, 186)));
+		   else if (strJogaores[i].equals("Verde"))
+		    lstJogadores.add(new model.Exercito("Verde", new Color(006, 124, 000)));
+		   else if (strJogaores[i].equals("Amarelo"))
+		    lstJogadores.add(new model.Exercito("Amarelo", new Color(255, 188, 000)));
+		   else if (strJogaores[i].equals("Preto"))
+		    lstJogadores.add(new model.Exercito("Preto", new Color(000, 000, 000)));
+		  }
+		  lstJogadores.get(0).setAtivo();
+		 }
+	
 	public void btnJogarDados_click() {
 
 		if (vencedor == null) {
