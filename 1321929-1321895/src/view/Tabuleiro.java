@@ -175,6 +175,7 @@ public class Tabuleiro extends JFrame implements Observer {
 
 		add(btnJogardados);		
 		
+
 		add(pnlDados);
 
 		repaint();

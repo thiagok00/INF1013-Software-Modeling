@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controller.ControllerTabuleiro;
 
 @SuppressWarnings("serial")
 public class PnlJogadores extends JPanel implements Observer {
-	
+
 	private static PnlJogadores pnlJogadores;
 	ControllerTabuleiro controller = ControllerTabuleiro.getInstance();
 	private static ArrayList<Jogador> lstJogadores = new ArrayList<Jogador>();
@@ -22,6 +23,7 @@ public class PnlJogadores extends JPanel implements Observer {
 		for(view.Jogador j: getLstJogadores() ){
 			add(new Jogador(j.getNome(), j.getCor()));
 		}
+		
 	}
 	
 	public static void setJogadores(ArrayList<Exercito> lst) {
@@ -50,7 +52,6 @@ public class PnlJogadores extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		
 	}
 	
 }

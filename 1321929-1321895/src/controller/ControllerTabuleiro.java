@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 
 import model.*;
+import view.Configuracao;
 
 /**
  * @author Pedro
@@ -892,7 +893,8 @@ public class ControllerTabuleiro extends Observable {
 			mensagem += " (botão esquerdo seleciona origem, botão direito move soldados)";
 		}
 		setMensagem(mensagem);
-
+		//FIMJOGADA
+		Configuracao.cli.sendMsgToServer(this.montaMsg());
 	}
 
 	private void setJogadorDaVez() {
@@ -1483,7 +1485,7 @@ public class ControllerTabuleiro extends Observable {
 
 	public void pnlMapa_click(int x, int y, int botaoMouse) {
 
-		if (vencedor == null) {
+		if (vencedor == null && meuNome.equals(jogadorDaVez.getNome())) {
 
 			Territorio t = descobreTerritorioClicado(x, y);
 			Continente c = descobreContinenteClicado(x, y);
@@ -1599,5 +1601,6 @@ public class ControllerTabuleiro extends Observable {
 	public boolean validaTroca(HashSet<String> lstTroca) {
 		return false;
 	}
-
+	
+	
 }

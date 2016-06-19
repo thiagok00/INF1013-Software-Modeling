@@ -212,6 +212,8 @@ public class Configuracao extends JFrame {
 		if(validaJogadores()){
 			ControllerTabuleiro c = ControllerTabuleiro.getInstance();
 			c.meuNome = meuNome;
+
+			
 			
 			if (meuNome.equals("Laranja")) {
 				String msg = c.montaMsg();
