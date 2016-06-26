@@ -4,6 +4,6 @@
 ### Chat
     Experimental chat(exercise)
 ### T2
-    War Server
+    War Server for a already made war game
 
 Group: Thiago Klein, Andre Parente
